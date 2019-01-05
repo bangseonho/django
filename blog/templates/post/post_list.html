@@ -1,0 +1,5 @@
+<h1>post_list</h1>
+{% for post in posts %}
+	<p>{{ post.user.username }}</p>
+	<a href="{% url 'post_detail' post.pk %}"><p>{{ post.title }}</p></a>
+{% endfor %}
