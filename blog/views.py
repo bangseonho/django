@@ -1,10 +1,21 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login as django_login, logout as django_logout, authenticate
 
-from .forms import LoginForm, SignupForm
+from .forms import LoginForm, SignupForm, PostForm
 from .models import Post
 
-
+def post_new(request):
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.user = request.user
+            post.save()
+            return redirect('post_list')
+    else:
+        form = PostForm()
+    return render(request, 'post/create.html', {'form':form})
+    
 def post_list(request):
 	posts = Post.objects.all()
 	context = {

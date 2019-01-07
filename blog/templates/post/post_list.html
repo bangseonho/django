@@ -5,7 +5,9 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/card.css' %}">
 
 <div class="container">
-<h1>post_list</h1>
+
+<a href="/post_list/new"><p>글쓰기</p></a>
+
 {% for post in posts %}
 
 	<a href="{% url 'post_detail' post.pk %}"> <!-- 클릭 시 링크 설정 -->
