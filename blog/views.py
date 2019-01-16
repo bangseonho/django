@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login as django_login, logout as django_logout, authenticate
+from django.contrib.auth.decorators import login_required
 
 from .forms import LoginForm, SignupForm, PostForm
-from .models import Post
+from .models import Post, Comment
 
+@login_required
 def post_new(request):
     if request.method == 'POST':
         form = PostForm(request.POST)
@@ -80,6 +82,18 @@ def signup(request):
     }
     return render(request, 'member/signup.html', context)
 
+@login_required
+def comment_create(request, pk):
+    if request.method == 'POST':
+        post = get_object_or_404(Post, pk=pk)
+        content = request.POST.get('content')
+        com_user = request.user
+        
+        if not content:
+            messages.info(request, 'Write please')
+            return redirect('post_detail', pk)
+    Comment.objects.create(post=post, comment_user=com_user, comment_content=content)
+    return redirect('post_detail', pk)
 
 # Create your views here.
 def home(request):

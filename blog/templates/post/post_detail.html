@@ -1,8 +1,14 @@
 <h1>post_detail</h1>
 {{ post.text }}
 <hr>
+<form action="{% url 'comment_create' pk=post.pk %}" method="POST">
+    {% csrf_token %}
+    <input type="text", name="content", placeholder="댓글 달기...">
+    <input type="submit", value="게시">
+</form>
 {% for comment in post.comments.all %}
     <p>{{ comment.comment_date }}</p>
     <p>{{ comment.comment_user }}</p>
     <p>{{ comment.comment_content }}</p>
 {% endfor %}
+<a href="/post_list">목록</a>
