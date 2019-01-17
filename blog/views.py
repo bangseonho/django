@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import LoginForm, SignupForm, PostForm
 from .models import Post, Comment
 
-@login_required
+@login_required(login_url='/login/')
 def post_new(request):
     if request.method == 'POST':
         form = PostForm(request.POST)
@@ -82,7 +82,7 @@ def signup(request):
     }
     return render(request, 'member/signup.html', context)
 
-@login_required
+@login_required(login_url='/login/')
 def comment_create(request, pk):
     if request.method == 'POST':
         post = get_object_or_404(Post, pk=pk)
